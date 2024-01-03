@@ -1,0 +1,17 @@
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check QEMU version
+        run: |
+          qemu --version
+          ls -la /proc/sys/fs/binfmt_misc
+          docker --version
+      - name: Checkout source    
+        uses: actions/checkout@v4
+      - name: Test build
+        run: |
+          export platform="linux/arm/v7"
+          docker buildx build --progress=plain --platform "${platform}" --tag demo .
